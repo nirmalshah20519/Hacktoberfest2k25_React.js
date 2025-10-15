@@ -62,11 +62,27 @@ const Login = () => {
       });
     }
   };
-
   const validateForm = () => {
+    const newErrors = {};
     
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -78,10 +94,10 @@ const Login = () => {
 
     // TODO: Call login from auth context
     try {
-     
+      await login(formData);
+      toast.success('Login successful!');
+      navigate('/');
 
-      // Placeholder
-      toast.error('Login not implemented yet');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Login failed');
     } finally {
