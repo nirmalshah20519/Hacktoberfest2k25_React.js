@@ -36,11 +36,16 @@ import { Routes, Route } from 'react-router-dom';
 
 
 // TODO: Import layout components
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 
 // TODO: Import page components
-
-
+import Home from './pages/Home';
+import Questions from './pages/Questions';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import AddQuestion from './pages/AddQuestion';
 // TODO: Import PrivateRoute wrapper for protected routes
 
 
@@ -67,49 +72,57 @@ import { Routes, Route } from 'react-router-dom';
  * - /admin - Admin dashboard (requires admin role)
  *
  * EXAMPLE:
- * <AuthProvider>
- *   <Navbar />
- *   <main className="min-h-screen">
- *     <Routes>
- *       <Route path="/" element={<Home />} />
- *       <Route path="/questions" element={<Questions />} />
- *       <Route path="/login" element={<Login />} />
- *       <Route path="/submit" element={<PrivateRoute><AddQuestion /></PrivateRoute>} />
- *     </Routes>
- *   </main>
- *   <Footer />
- * </AuthProvider>
+//  * <AuthProvider>
+//  *   <Navbar />
+//  *   <main className="min-h-screen">
+//  *     <Routes>
+//  *       <Route path="/" element={<Home />} />
+//  *       <Route path="/questions" element={<Questions />} />
+//  *       <Route path="/login" element={<Login />} />
+//  *       <Route path="/submit" element={<PrivateRoute><AddQuestion /></PrivateRoute>} />
+//  *     </Routes>
+//  *   </main>
+//  *   <Footer />
+//  * </AuthProvider>
  */
 
 function App() {
   return (
     <div className="App">
-      {/* TODO: Add AuthProvider wrapper */}
-      {/* TODO: Add Navbar */}
+      {/* TODO: Add AuthProvider wrapper when AuthContext is ready */}
+      {/* <AuthProvider> */}
+
+      <Navbar />
 
       <main className="min-h-screen bg-gray-50">
-        {/* TODO: Add Routes */}
         <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="container mx-auto px-4 py-16 text-center">
-                <h1 className="text-4xl font-bold text-gray-800 mb-4">Welcome to InterviewPrep</h1>
-                <p className="text-xl text-gray-600 mb-8">A Community-Sourced Interview Question Bank</p>
-                <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 max-w-2xl mx-auto">
-                  <p className="text-yellow-700">
-                    <strong>🚀 Hacktoberfest Contributors:</strong> This is a starter template. Implement the routes,
-                    components, and pages according to the TODO comments throughout the codebase.
-                  </p>
-                </div>
-              </div>
-            }
-          />
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/questions" element={<Questions />} />
+          {/* <Route path="/questions/:id" element={<QuestionDetails />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Protected Routes - TODO: Wrap with PrivateRoute later */}
+          <Route path="/submit" element={<AddQuestion />} />
+          {/* <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} /> */}
+          {/* <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} /> */}
+
+          {/* 404 Fallback */}
+          <Route path="*" element={
+            <div className="container mx-auto px-4 py-16 text-center">
+              <h1 className="text-4xl font-bold text-gray-800 mb-4">404 - Page Not Found</h1>
+              <p className="text-xl text-gray-600">The page you're looking for doesn't exist.</p>
+            </div>
+          } />
         </Routes>
       </main>
 
-      {/* TODO: Add Footer */}
+      <Footer />
+
+      {/* </AuthProvider> */}
     </div>
+
   );
 }
 
