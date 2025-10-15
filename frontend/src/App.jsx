@@ -33,7 +33,7 @@
 
 import { Routes, Route } from 'react-router-dom';
 // TODO: Import AuthProvider
-
+import { AuthProvider } from './context/AuthContext';
 
 // TODO: Import layout components
 import Navbar from './components/Navbar';
@@ -90,7 +90,7 @@ function App() {
   return (
     <div className="App">
       {/* TODO: Add AuthProvider wrapper when AuthContext is ready */}
-      {/* <AuthProvider> */}
+      <AuthProvider>
 
       <Navbar />
 
@@ -120,7 +120,7 @@ function App() {
 
       <Footer />
 
-      {/* </AuthProvider> */}
+      </AuthProvider>
     </div>
 
   );

@@ -129,6 +129,37 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   // TODO: Implement login function
+  const login = async (credentials) => {
+    try {
+
+     // const response = await loginApi(credentials);
+
+      // Mock response - replace with actual API response
+      const mockResponse = {
+        token: 'mock-jwt-token-' + Date.now(),
+        user: {
+          id: 1,
+          name: 'Test User',
+          email: credentials.email,
+          role: 'user'
+        }
+      };
+      
+      // Mock validation
+      if (credentials.email === 'test@example.com' && credentials.password === 'password123') {
+        setToken(mockResponse.token);
+        setUser(mockResponse.user);
+        localStorage.setItem('token', mockResponse.token);
+        toast.success('Login successful!');
+        return mockResponse;
+      } else {
+        throw new Error('Invalid email or password');
+      }
+    } catch (error) {
+      toast.error(error.message || 'Login failed');
+      throw error;
+    }
+  };
 
   // TODO: Implement register function
 
@@ -153,7 +184,7 @@ export const AuthProvider = ({ children }) => {
     token,
     loading,
     isAuthenticated: !!user,
-    login: () => console.log('Login not implemented'),
+    login:login,
     register: () => console.log('Register not implemented'),
     logout: () => {
       setUser(null);
