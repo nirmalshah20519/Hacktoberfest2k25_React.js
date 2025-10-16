@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * QUESTIONS PAGE - Browse all questions with filters
  *
@@ -28,7 +29,7 @@
 
 import { useState, useEffect } from 'react';
 // TODO: Import API functions
-// import { getAllQuestions, getCategories, searchQuestions } from '../api/questionApi';
+import { getAllQuestions, getCategories, searchQuestions } from '../api/questionApi';
 // import QuestionCard from '../components/QuestionCard';
 // import Loading from '../components/Loading';
 
@@ -67,6 +68,9 @@ const Questions = () => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+  const [categoriesError, setCategoriesError] = useState('');
+
   const [filters, setFilters] = useState({
     company: '',
     topic: '',
@@ -86,9 +90,29 @@ const Questions = () => {
     // fetchQuestions();
   }, [filters]);
 
+  //Fetch categories function for filters
+  const fetchCategories = async () => {
+    setCategoriesLoading(true);
+    setCategoriesError('');
+    try {
+      const categoriesData = await getCategories();
+
+      setCategories({
+        companies: categoriesData.companies || [],
+        topics: categoriesData.topics || [],
+        roles: categoriesData.roles || [],
+      })
+    }
+    catch (err) {
+      setCategoriesError('Failed to load filter options. Please try again later.');
+      console.error('Error fetching categories:', err);
+    }
+
+  }
+
   // TODO: Fetch categories for filters
   useEffect(() => {
-    // fetchCategories();
+    fetchCategories();
   }, []);
 
   return (
