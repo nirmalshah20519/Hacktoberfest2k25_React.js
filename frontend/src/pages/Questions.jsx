@@ -107,7 +107,9 @@ const Questions = () => {
       setCategoriesError('Failed to load filter options. Please try again later.');
       console.error('Error fetching categories:', err);
     }
-
+    finally {
+      setCategoriesLoading(false); // This ensures loading stops even if error occurs
+    }
   }
 
   // TODO: Fetch categories for filters
