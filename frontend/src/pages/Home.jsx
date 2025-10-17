@@ -25,8 +25,9 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 // TODO: Import API functions
-// import { getAllQuestions } from '../api/questionApi';
-// import QuestionCard from '../components/QuestionCard';
+import { getAllQuestions } from '../api/questionApi';
+import QuestionCard from '../components/QuestionCard';
+import toast from 'react-hot-toast';
 
 /**
  * TODO: IMPLEMENT HOME PAGE
@@ -53,8 +54,27 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
 
   // TODO: Fetch recent questions on mount
+
+  const fetchRecentQuestions = async () => {
+    setLoading(true);
+    try {
+      const response = await getAllQuestions({ 
+        sort: 'latest', 
+        limit: 6 
+      });
+      
+      setRecentQuestions(response.questions || []);
+    } catch (error) {
+      console.error('Error fetching recent questions:', error);
+      toast.error('Failed to load recent questions');
+      setRecentQuestions([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // fetchRecentQuestions();
+    fetchRecentQuestions();
   }, []);
 
   return (
@@ -114,6 +134,34 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Recent Questions</h2>
           {/* TODO: Display recent questions using QuestionCard */}
+          {
+            loading ? (
+               <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <p className="ml-4 text-gray-600">Loading questions...</p>
+      </div>
+            ) : recentQuestions.length > 0 ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {recentQuestions.map((question) => (
+          <QuestionCard 
+            key={question._id} 
+            question={question}
+            showActions={true}
+          />
+        ))}
+      </div>
+            ) : (
+              <div className="text-center text-gray-500 col-span-full py-8">
+        <p className="text-lg mb-4">No questions available yet</p>
+        <Link 
+          to="/submit" 
+          className="text-primary-600 hover:underline font-semibold"
+        >
+          Be the first to submit a question! →
+        </Link>
+      </div>
+            )
+          }
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Placeholder */}
             <div className="text-center text-gray-500 col-span-full py-8">
