@@ -85,7 +85,14 @@ const Questions = () => {
     roles: [],
   });
 
-  // TODO: Fetch questions on mount and when filters change
+  const handleFilterChange = (filterType, value) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [filterType]: value
+    }));
+  };
+
+  // Trigger fetchQuestions when filters change
   useEffect(() => {
     // fetchQuestions();
   }, [filters]);
@@ -143,7 +150,7 @@ const Questions = () => {
         <select
           className="px-4 py-2 border rounded-lg"
           value={filters.company}
-          onChange={(e) => setFilters({ ...filters, company: e.target.value })}
+          onChange={(e) => handleFilterChange('company', e.target.value)}
         >
           <option value="">All Companies</option>
           {/* TODO: Map categories.companies */}
@@ -152,7 +159,7 @@ const Questions = () => {
         <select
           className="px-4 py-2 border rounded-lg"
           value={filters.topic}
-          onChange={(e) => setFilters({ ...filters, topic: e.target.value })}
+          onChange={(e) => handleFilterChange('topic', e.target.value)}
         >
           <option value="">All Topics</option>
           {/* TODO: Map categories.topics */}
@@ -161,7 +168,7 @@ const Questions = () => {
         <select
           className="px-4 py-2 border rounded-lg"
           value={filters.difficulty}
-          onChange={(e) => setFilters({ ...filters, difficulty: e.target.value })}
+          onChange={(e) => handleFilterChange('difficulty', e.target.value)}
         >
           <option value="">All Difficulties</option>
           <option value="Easy">Easy</option>
@@ -172,7 +179,7 @@ const Questions = () => {
         <select
           className="px-4 py-2 border rounded-lg"
           value={filters.sort}
-          onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
+          onChange={(e) => handleFilterChange('sort', e.target.value)}
         >
           <option value="latest">Latest</option>
           <option value="oldest">Oldest</option>
