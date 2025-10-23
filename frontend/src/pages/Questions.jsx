@@ -116,8 +116,42 @@ const fetchQuestions = useCallback(async () => {
 
   // Trigger fetchQuestions when filters change
     useEffect(() => {
+      fetchQuestions();
+     }, [fetchQuestions]);
+  // Trigger fetchQuestions when filters change
+  useEffect(() => {
+
+    const fetchQuestions = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const queryParams = {};
+        if (filters.company) queryParams.company = filters.company;
+        if (filters.topic) queryParams.topic = filters.topic;
+        if (filters.role) queryParams.role = filters.role;
+        if (filters.difficulty) queryParams.difficulty = filters.difficulty;
+        if (filters.sort) queryParams.sort = filters.sort;
+
+        const questionData = await getAllQuestions(queryParams);
+
+        setQuestions(questionData.questions || questionData || [])
+      }
+      catch (err) {
+        setError('Failed to load questions. Please try again later.');
+        console.error('Error fetching questions:', err);
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+
     fetchQuestions();
-    }, [fetchQuestions]);
+  }, [filters]);
+
+  // Fetch questions on mount and when filters change
+  useEffect(() => {
+    fetchQuestions();
+  }, [fetchQuestions]);
 
   //Fetch categories function for filters
   const fetchCategories = async () => {
