@@ -130,7 +130,19 @@ export const AuthProvider = ({ children }) => {
 
   // TODO: Implement login function
 
-  // TODO: Implement register function
+  const register = async (userData) => {
+    try {
+      const response = await registerApi(userData);
+      setToken(response.token);
+      setUser(response.user);
+      localStorage.setItem('token', response.token);
+      toast.success('Registration successful! You are now logged in.');
+      return response;
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Registration failed');
+      throw error;
+    }
+  };
 
   // TODO: Implement logout function
 
@@ -154,7 +166,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     isAuthenticated: !!user,
     login: () => console.log('Login not implemented'),
-    register: () => console.log('Register not implemented'),
+    register,
     logout: () => {
       setUser(null);
       setToken(null);
